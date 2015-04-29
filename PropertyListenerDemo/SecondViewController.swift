@@ -17,14 +17,8 @@ class SecondViewController: UIViewController {
 
         title = "Second"
 
-        nameButton.setTitle(UserInfo.sharedInstance.name, forState: .Normal)
-
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateUI:", name: UserInfo.Notification.NameChanged, object: nil)
-    }
-
-    func updateUI(notification: NSNotification) {
-        if let name = notification.object as? String {
-            nameButton.setTitle(name, forState: .Normal)
+        UserInfo.bindAndFireNameListener { name in
+            self.nameButton.setTitle(name, forState: .Normal)
         }
     }
 }

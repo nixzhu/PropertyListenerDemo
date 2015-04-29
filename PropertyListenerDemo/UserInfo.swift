@@ -12,13 +12,23 @@ class UserInfo {
 
     static let sharedInstance = UserInfo()
 
-    struct Notification {
-        static let NameChanged = "UserInfo.Notification.NameChanged"
+    typealias NameListener = (String?) -> Void
+
+    var nameListeners = [NameListener]()
+
+    class func bindNameListener(nameListener: NameListener) {
+        self.sharedInstance.nameListeners.append(nameListener)
+    }
+
+    class func bindAndFireNameListener(nameListener: NameListener) {
+        bindNameListener(nameListener)
+
+        nameListener(self.sharedInstance.name)
     }
 
     var name: String = "NIX" {
         didSet {
-            NSNotificationCenter.defaultCenter().postNotificationName(Notification.NameChanged, object: name)
+            nameListeners.map { $0(self.name) }
         }
     }
 }
