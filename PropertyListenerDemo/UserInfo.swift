@@ -19,7 +19,7 @@ class UserInfo {
     struct NameListener: Hashable {
         let name: String
 
-        typealias Action = (String?) -> Void
+        typealias Action = String -> Void
         let action: Action
 
         var hashValue: Int {
