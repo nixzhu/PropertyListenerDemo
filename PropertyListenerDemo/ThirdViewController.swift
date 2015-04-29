@@ -17,8 +17,12 @@ class ThirdViewController: UIViewController {
 
         title = "Third"
 
-        UserInfo.bindAndFireNameListener("ThirdViewController.nameButton") { name in
+        UserInfo.name.bindAndFireListener("ThirdViewController.nameButton") { name in
             self.nameButton.setTitle(name, forState: .Normal)
+        }
+
+        UserInfo.hairColor.bindAndFireListener("ThirdViewController.backgroundColor") { color in
+            self.view.backgroundColor = color
         }
     }
 
@@ -32,7 +36,12 @@ class ThirdViewController: UIViewController {
 
         let action: UIAlertAction = UIAlertAction(title: "OK", style: .Default) { action -> Void in
             if let textField = alertController.textFields?.first as? UITextField {
-                UserInfo.sharedInstance.name = textField.text
+                UserInfo.name.value = textField.text
+
+                let red = CGFloat(arc4random()) % 256 / 255.0
+                let green = CGFloat(arc4random()) % 256 / 255.0
+                let blue = CGFloat(arc4random()) % 256 / 255.0
+                UserInfo.hairColor.value = UIColor(red: red, green: green, blue: blue, alpha: 1)
             }
         }
         alertController.addAction(action)

@@ -17,8 +17,12 @@ class SecondViewController: UIViewController {
 
         title = "Second"
 
-        UserInfo.bindAndFireNameListener("SecondViewController.nameButton") { name in
+        UserInfo.name.bindAndFireListener("SecondViewController.nameButton") { name in
             self.nameButton.setTitle(name, forState: .Normal)
+        }
+
+        UserInfo.hairColor.bindAndFireListener("SecondViewController.backgroundColor") { color in
+            self.view.backgroundColor = color
         }
     }
 }
