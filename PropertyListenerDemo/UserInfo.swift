@@ -8,27 +8,44 @@
 
 import Foundation
 
+func ==(lhs: UserInfo.NameListener, rhs: UserInfo.NameListener) -> Bool {
+    return lhs.name == rhs.name
+}
+
 class UserInfo {
 
     static let sharedInstance = UserInfo()
 
-    typealias NameListener = (String?) -> Void
+    struct NameListener: Hashable {
+        let name: String
 
-    var nameListeners = [NameListener]()
+        typealias Action = (String?) -> Void
+        let action: Action
 
-    class func bindNameListener(nameListener: NameListener) {
-        self.sharedInstance.nameListeners.append(nameListener)
+        var hashValue: Int {
+            return name.hashValue
+        }
     }
 
-    class func bindAndFireNameListener(nameListener: NameListener) {
-        bindNameListener(nameListener)
+    var nameListenerSet = Set<NameListener>()
 
-        nameListener(self.sharedInstance.name)
+    class func bindNameListener(name: String, action: NameListener.Action) {
+        let nameListener = NameListener(name: name, action: action)
+
+        self.sharedInstance.nameListenerSet.insert(nameListener)
+    }
+
+    class func bindAndFireNameListener(name: String, action: NameListener.Action) {
+        bindNameListener(name, action: action)
+
+        action(self.sharedInstance.name)
     }
 
     var name: String = "NIX" {
         didSet {
-            nameListeners.map { $0(self.name) }
+            for nameListener in nameListenerSet {
+                nameListener.action(name)
+            }
         }
     }
 }

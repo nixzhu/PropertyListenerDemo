@@ -17,7 +17,7 @@ class ThirdViewController: UIViewController {
 
         title = "Third"
 
-        UserInfo.bindAndFireNameListener { name in
+        UserInfo.bindAndFireNameListener("ThirdViewController.nameButton") { name in
             self.nameButton.setTitle(name, forState: .Normal)
         }
     }

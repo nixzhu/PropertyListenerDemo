@@ -17,7 +17,7 @@ class SecondViewController: UIViewController {
 
         title = "Second"
 
-        UserInfo.bindAndFireNameListener { name in
+        UserInfo.bindAndFireNameListener("SecondViewController.nameButton") { name in
             self.nameButton.setTitle(name, forState: .Normal)
         }
     }

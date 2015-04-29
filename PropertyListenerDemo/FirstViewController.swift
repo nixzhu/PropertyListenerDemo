@@ -17,7 +17,7 @@ class FirstViewController: UIViewController {
 
         title = "First"
 
-        UserInfo.bindAndFireNameListener { name in
+        UserInfo.bindAndFireNameListener("FirstViewController.nameButton") { name in
             self.nameButton.setTitle(name, forState: .Normal)
         }
     }
